@@ -1,4 +1,4 @@
-title,country,rank,score,student_tot,student_int,faculty_tot
+title,country,rank_display,score,student_tot,student_int,faculty_tot
 University of Oxford,United Kingdom,1.0,94.3,20409,7755,1822
 University of Cambridge,United Kingdom,2.0,93.2,18389,6436,1687
 California Institute of Technology,United States,3.0,93.0,2209,596,340
