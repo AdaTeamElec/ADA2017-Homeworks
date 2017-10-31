@@ -2,7 +2,7 @@
 
 # Abstract
 
-Terrorism is often discuss in media and, unfortunately, we became accustomed to its precence worldwide. However it is not a recent problem we are facing. The source of certain conflicts dates from multiple decades and are still lasting today. Our goal is to track and vizualise its evolution through the past 50 years bases on "[The Global Terrorism Database](https://www.kaggle.com/START-UMD/gtd)". They are a lot of questions we can ask ourself about terrorism, such as "Is EU less safe nowdays ?", "Did attack mediums & reasons change over the years ?" or "Can we discriminate current/future conflictual zones ?". Of course we are not going to solve major issues or even predict futur attacks. But thoses are basic questions that will allow us to have an overview and better understand the evolution of terrorism.
+Terrorism is often discussed in media and, unfortunately, we became accustomed to its precence worldwide. However it is not a recent problem we are facing. The source of certain conflicts dates from multiple decades and are still lasting today. Our goal is to track and vizualise its evolution through the past 50 years based on "[The Global Terrorism Database](https://www.kaggle.com/START-UMD/gtd)". There are lots of questions we can ask ourself about terrorism, such as "Is EU less safe nowdays ?", "Did attack mediums & reasons change over the years ?" or "Can we discriminate current/future conflictual zones ?". Of course we are not going to solve major issues or even predict futur attacks. But thoses are basic questions that will allow us to have an overview and better understand the evolution of terrorism.
 
 
 # Research questions
