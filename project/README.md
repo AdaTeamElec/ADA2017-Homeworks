@@ -9,7 +9,7 @@ Terrorism is a subject largely covered in the media, and, unfortunately, we beca
 ### Data Analysis & Vizualization
 
 - Have terrorist attack become more frequent over the years ?
-- Did the number of casualties increased country-wise/worldwide, over the years ?
+- Did the number of casualties increased region-wise/worldwide, over the years ?
 - Where and when did the deadliest attacks occur ?
 - What is the evolution of attack's mediums & reasons ? Who is targeted ?
 - Is the religious factor always responsible for terrorist attacks ? (enough data ?)
