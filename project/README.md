@@ -36,6 +36,13 @@ Now that our data are cleaned we can start answering the questions mentioned abo
 ## 3. Comments - 28.11.17
 Comment data and analyse the results. Have a structured plan for what comes next (further analysis and final report).
 
+# A list of internal milestones up until project milestone 3 
 
-# Questions for TAs
-Fine for now :)
+## 1. Group connections graph
+In our data we have 3 entries for groupe names. It is linked to the fact that some terrorist attacks are organized by multiple groups. Our data even tell us if two groups are competiting and claiming a specific attacks. We will use thoses informations to create a graph to link groups together. In other words, here we want to focus on how terrorists work together (or on their own) in certain zones using graphs. We hope to highlight cluster of groups working togther in specific regions.
+
+## 2. Group territory evolution
+An other why of looking at terrorism it to look at how group territories are evolving over the years. Al Qaida was present in Iraq few years ago. Now it is ISIS that is ruling over the same territory. We will create a graph to represent the atual world and use graph signal processing (GSP) to look at the evolution of territories over time. More precisely we will use [heat kernels](https://en.wikipedia.org/wiki/Heat_kernel) to estimate the zones of influence of each groups. This technic allows us to give importance to attacks and create intelligent representation of territories.
+
+## 3. Reasons (if time allows)
+There is still one question in our plan that remains unanswerd: "Is the religious factor always responsible for terrorist attacks ?". It is difficult to answer to this question since we have actually have no data on attacks motives. We know who is targeted but not the reasons of the attacks. A solution will be to use online source to complete our data. For example one can imagine using wikipedia to find most frequent terms occurences. The term "Religion" is more likely to appear on ISIS wikipage than on FARC one.
