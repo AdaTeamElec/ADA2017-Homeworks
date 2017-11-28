@@ -1,7 +1,7 @@
 
 # Created by https://www.gitignore.io/api/linux,python,jupyternotebook
 
-data/*
+data/globalterrorismdb_0617dist.csv
 
 ### JupyterNotebook ###
 .ipynb_checkpoints
