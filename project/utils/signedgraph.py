@@ -42,10 +42,12 @@ def get_clusters(L, k=3):
     Cluster nodes using eigenvector of Laplacian as feature with kMean. Return
     labels of cluster.
     '''    
-    lam, V = get_basis_L(L)
-    id_first = np.nonzero(lam > 1e-10)[0][0]
-    X = V[:,id_first:]
-    
+    lam, V = get_basis_L(L, k)
+    if len(np.nonzero(lam > 1e-10)[0]) == 0:
+        X = V[:, [0]]
+    else :
+        id_first = np.nonzero(lam > 1e-10)[0][0]
+        X = V[:,id_first:]
     kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
     return kmeans.labels_
 
@@ -55,6 +57,8 @@ def cut_loss(W, cgt):
     loss (negative link inside cluster) and external loss (positive link to 
     other cluster). W is the adjacency and cgt the ground truth
     '''
+    if cgt is None:
+        return np.nan
     nk = np.unique(cgt)
     Ap = np.maximum(W.toarray(), 0)
     An = np.maximum(-W.toarray(), 0)
@@ -71,10 +75,11 @@ def cut_loss(W, cgt):
     cut = cut/len(nk)
     return cut
 
-def estimate_ncluster(W, L, n_max=12, plotloss=False):
+def estimate_ncluster(W, L, plotloss=False):
     '''
     Try to cluster with multiple k, and return the one with smallest loss
     '''
+    n_max = L.shape[0]-1
     loss = np.zeros((n_max, 2))
 
     for i, k in enumerate(range(1,n_max+1)):
@@ -174,7 +179,7 @@ def get_pos(W, cgt, r=3):
     return pos
 
 
-def draw_graph(W, cgt=None, reorder=False, labels=None, ax=None, offset=0.3):
+def draw_graph(W, cgt=None, reorder=False, labels=None, ax=None, offset=0):
     '''
     Draw graph for viz. If cgt is not present nodes will be set to black. If cgt 
     is given node will be cluster acordingly. Labels can be used for better display
@@ -210,11 +215,12 @@ def draw_graph(W, cgt=None, reorder=False, labels=None, ax=None, offset=0.3):
     nx.draw_networkx_edges(G, pos=base_g, edge_color=val, width=4, 
                            edge_cmap=plt.cm.bwr, edge_vmax=1, edge_vmin=-1, ax=ax_)
     
-    nx.draw_networkx_labels(G, base_g, font_color='w', ax=ax_)
+    # nx.draw_networkx_labels(G, base_g, font_color='w', ax=ax_)
     if labels is not None:
         d = dict(zip(np.arange(len(labels)), labels))
         base_g_lab = base_g
         base_g_lab[:, 1] += offset
-        nx.draw_networkx_labels(G, base_g, d, font_weight='bold', font_size=12, ax=ax_)
+        nx.draw_networkx_labels(G, base_g, d, font_size=9, ax=ax_)
     ax_.axis('off')
+    
         
