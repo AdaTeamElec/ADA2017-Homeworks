@@ -34,8 +34,11 @@ def get_basis_L(L, k=3):
     ''' 
     Return approximation of Laplacian k first eigenvalues and eigenvectors 
     '''
-    lam, V = scipy.sparse.linalg.eigsh(L, k=k, which='SM')
-    return lam, V
+    if k < L.shape[1]-1:
+        lam, V = scipy.sparse.linalg.eigsh(L, k=k, which='SM')
+        return lam, V
+    else:
+        return None, None
 
 def get_clusters(L, k=3):
     '''
@@ -43,11 +46,12 @@ def get_clusters(L, k=3):
     labels of cluster.
     '''    
     lam, V = get_basis_L(L, k)
-    if len(np.nonzero(lam > 1e-10)[0]) == 0:
-        X = V[:, [0]]
+    if lam is None or V is None or len(np.nonzero(lam > 1e-10)[0]) == 0:
+        return None
     else :
         id_first = np.nonzero(lam > 1e-10)[0][0]
         X = V[:,id_first:]
+    np.random.seed(0)
     kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
     return kmeans.labels_
 
@@ -73,6 +77,8 @@ def cut_loss(W, cgt):
         lambda_ = (1/np.sum(id_x) + 1/np.sum(id_y))*len(id_x)
         cut += lambda_*(cutp + cutn)
     cut = cut/len(nk)
+    if np.isinf(cut):
+        cut = np.nan
     return cut
 
 def estimate_ncluster(W, L, plotloss=False):
@@ -85,12 +91,16 @@ def estimate_ncluster(W, L, plotloss=False):
     for i, k in enumerate(range(1,n_max+1)):
         cgt = get_clusters(L, k)
         loss[i, 0] = k
-        loss[i, 1] = cut_loss(W, cgt)
+        if cgt is None:
+            loss[i, 1] = np.nan
+        else:
+            loss[i, 1] = cut_loss(W, cgt)
     
     if plotloss:
-        plt.plot(loss[:,0], loss[:, 1])
+        plt.plot(loss[:,0], loss[:, 1]/np.nanmean(loss[:, 1]), label='N={}'.format(n_max+1))
+        plt.ylim([0,1])
     
-    return int(loss[np.argmin(loss[:,1]), 0])
+    return int(loss[np.nanargmin(loss[:,1]), 0])
 
 def reindex_W_with_classes(W,C):
     """
@@ -156,7 +166,7 @@ def get_dummy(type_=0):
     W = scipy.sparse.csr_matrix(W) 
     return W
 
-def get_pos(W, cgt, r=3):
+def get_pos(W, cgt, r=9):
     '''
     Take adjacency matrix (W) and ground truth for nodes (cgt). Will create
     a graph with prdefined structure (star graph). The radius can be changed with 
@@ -208,7 +218,7 @@ def draw_graph(W, cgt=None, reorder=False, labels=None, ax=None, offset=0):
         ax_ = ax
 
     if cgt is not None:
-        nx.draw_networkx_nodes(G, pos=base_g, node_color=cgt, node_cmap=plt.cm.hsv, ax=ax_)
+        nx.draw_networkx_nodes(G, pos=base_g, node_color=cgt, node_cmap=plt.cm.nipy_spectral, ax=ax_)
     else:
         nx.draw_networkx_nodes(G, pos=base_g, node_color='k', ax=ax_)
 
