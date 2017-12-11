@@ -4,6 +4,9 @@ from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import coo_matrix
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import matplotlib.collections as coll
 
 
 def locate_node(row, gname, nodes, cls_groups):
@@ -98,24 +101,35 @@ def plot_map_group(nodes, signal, title='', bbox=[-18, 10, 65, 45]):
     plt.title(title)
     plt.show()
     
-    
-def plot_map_cls(nodes, signal, title='', bbox=[5, 10, 65, 45]):
 
+def plot_map_cls(nodes, signal, cls_groups, title='', bbox=[5, 10, 65, 45]):
+
+    id_keep = np.nonzero(signal)[0]
+    signal = signal[id_keep]
+    u = np.unique(signal)
+    signal = [np.where(u==item)[0][0] for item in signal]
+    #print(signal)
+        
     plt.figure(figsize=(16,16))
+    cmap = cm.get_cmap(name='tab20')
     map_ = Basemap(llcrnrlon=bbox[0], llcrnrlat=bbox[1], urcrnrlon=bbox[2], urcrnrlat=bbox[3], 
                    resolution='i', lat_0 = 0, lon_0 = 0)
 
     map_.drawmapboundary(fill_color='#d4dadc')
     map_.fillcontinents(color='#fafaf8', lake_color='#d4dadc')
     map_.drawcountries()
-
-    id_keep = np.nonzero(signal)[0]
-    signal = signal[id_keep]
-    u = np.unique(signal)
-    signal = [np.where(u==item)[0][0] for item in signal]
-    x, y = map_(nodes.longitude.values[id_keep], nodes.latitude.values[id_keep])
-    #s_centerd = (signal-np.min(signal))/(np.max(signal)-np.min(signal))
-    sc = map_.scatter(x, y, c=signal, cmap='hsv', zorder=3, s=10)
+    
+    for id_signal in np.unique(signal):
+        id_groups = signal==id_signal
+        x, y = map_(nodes.longitude.values[id_keep][id_groups], nodes.latitude.values[id_keep][id_groups])
+        #s_centerd = (signal-np.min(signal))/(np.max(signal)-np.min(signal))
+        sc = map_.scatter(x, y, c=cmap(id_signal/np.max(signal)), zorder=3, s=10, label=cls_groups[u-1][id_signal])
     #cbar = map_.colorbar(sc,location='bottom',pad="5%")
     plt.title(title)
+    lgnd = plt.legend()
+    
+    for handle in lgnd.legendHandles:
+        if isinstance(handle, coll.PathCollection):
+            handle.set_sizes([50])
+
     plt.show()
