@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
 import matplotlib.collections as coll
+import json
 
 
 def locate_node(row, gname, nodes, cls_groups):
@@ -102,12 +103,13 @@ def plot_map_group(nodes, signal, title='', bbox=[-18, 10, 65, 45]):
     plt.show()
     
 
-def plot_map_cls(nodes, signal, cls_groups, title='', bbox=[5, 10, 65, 45]):
+def plot_map_cls(nodes, id_groups, signal, cls_groups,  title='', bbox=[5, 10, 65, 45]):
 
-    id_keep = np.nonzero(signal)[0]
+    id_keep = np.nonzero(id_groups)[0]
+    id_groups = id_groups[id_keep]
     signal = signal[id_keep]
-    u = np.unique(signal)
-    signal = [np.where(u==item)[0][0] for item in signal]
+    u = np.unique(id_groups)
+    id_groups = [np.where(u==item)[0][0] for item in id_groups]
     #print(signal)
         
     plt.figure(figsize=(16,16))
@@ -119,11 +121,12 @@ def plot_map_cls(nodes, signal, cls_groups, title='', bbox=[5, 10, 65, 45]):
     map_.fillcontinents(color='#fafaf8', lake_color='#d4dadc')
     map_.drawcountries()
     
-    for id_signal in np.unique(signal):
-        id_groups = signal==id_signal
-        x, y = map_(nodes.longitude.values[id_keep][id_groups], nodes.latitude.values[id_keep][id_groups])
+    for id_signal in np.unique(id_groups):
+        id_ = id_groups==id_signal
+        x, y = map_(nodes.longitude.values[id_keep][id_], nodes.latitude.values[id_keep][id_])
+        radius = 5 + 50*(signal[id_] - np.min(signal))/(np.max(signal) - np.min(signal))
         #s_centerd = (signal-np.min(signal))/(np.max(signal)-np.min(signal))
-        sc = map_.scatter(x, y, c=cmap(id_signal/np.max(signal)), zorder=3, s=10, label=cls_groups[u-1][id_signal])
+        sc = map_.scatter(x, y, c=cmap(id_signal/np.max(id_groups)), zorder=3, s=radius, alpha=0.7, label=cls_groups[u-1][id_signal])
     #cbar = map_.colorbar(sc,location='bottom',pad="5%")
     plt.title(title)
     lgnd = plt.legend()
@@ -133,3 +136,23 @@ def plot_map_cls(nodes, signal, cls_groups, title='', bbox=[5, 10, 65, 45]):
             handle.set_sizes([50])
 
     plt.show()
+    
+    
+def json_data(nodes, id_groups, signal, cls_groups, filename):
+
+    id_keep = np.nonzero(id_groups)[0]
+    id_groups = id_groups[id_keep]
+    signal = signal[id_keep]
+    nodes = nodes.iloc[id_keep]
+    # Put radius in range 5-55 (arbitrary)
+    radius = 5 + 50*(signal - np.min(signal))/(np.max(signal) - np.min(signal))
+    
+    data = []
+    for i in range(len(id_groups)):
+        point = {'name': cls_groups[id_groups[i]-1], 'radius': signal[i],
+                 'latitude': nodes.iloc[i].latitude, 'longitude': nodes.iloc[i].longitude}
+        data.append(point)
+            
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile)   
+    

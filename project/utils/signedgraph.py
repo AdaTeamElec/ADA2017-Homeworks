@@ -3,6 +3,7 @@ import scipy
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import json
 from scipy.sparse import csr_matrix
 
 ### -------------  Signed Graph -------------
@@ -233,4 +234,24 @@ def draw_graph(W, cgt=None, reorder=False, labels=None, ax=None, offset=0):
         nx.draw_networkx_labels(G, base_g, d, font_size=9, ax=ax_)
     ax_.axis('off')
     
+        
+def save_cluster_data(cluster, groups, filename):
+    W = cluster['W'].toarray()
+    g_name = groups[cluster['ids']]
+    est_cgt = cluster['est_cgt']
+        
+    data = []
+    for i in range(len(g_name)):
+        name = 'cluster{}.{}'.format(est_cgt[i], g_name[i])
+        friends = []
+        ennemy = []
+        for j in range(i, len(g_name)):
+            if W[i,j] > 0:
+                friends.append('cluster{}.{}'.format(est_cgt[j], g_name[j]))
+            elif W[i,j] < 0:
+                ennemy.append('cluster{}.{}'.format(est_cgt[j], g_name[j]))
+        data.append({'name': name, 'friends': friends, 'ennemy': ennemy})
+    
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile)
         
