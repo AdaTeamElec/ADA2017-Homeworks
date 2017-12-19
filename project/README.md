@@ -47,6 +47,6 @@ In our data we have 3 entries for groupe names. It is linked to the fact that so
 An other why of looking at terrorism it to look at how group territories are evolving over the years. Al Qaida was present in Iraq few years ago. Now it is ISIS that is ruling over the same territory. We will create a graph to represent the atual world and use graph signal processing (GSP) to look at the evolution of territories over time. More precisely we will use [heat kernels](https://en.wikipedia.org/wiki/Heat_kernel) to estimate the zones of influence of each groups. This technic allows us to give importance to attacks and create intelligent representation of territories.
 
 # Contributions
-- Christian Abbet: Data reading and cleaning. Computation of groups info and location and statisitcs. Plotting of results using folium and basemap. Graph signal processing technics for groups clustering (Signed Graph) and territories location (Heat Kernels and classification). Final presentation
+- Christian Abbet: Data reading and cleaning. Computation of groups info, location and statistics. Plotting of results using folium and basemap. Graph signal processing technics for groups clustering (Signed Graph) and territories location (Heat Kernels and classification). Final presentation
 - Nicolas Masserey: Data cleaning and processing, map generation using folium, results analysis, writting data story. Final presentation 
 - Alexandre Poussard: Problem formulation, data processing, analysis/graph plots, story telling developpement using d3.js. Final presentation
