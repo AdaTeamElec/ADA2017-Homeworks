@@ -146,13 +146,14 @@ def json_data(nodes, id_groups, signal, cls_groups, filename):
     nodes = nodes.iloc[id_keep]
     # Put radius in range 5-55 (arbitrary)
     radius = 5 + 50*(signal - np.min(signal))/(np.max(signal) - np.min(signal))
-    
+
     data = []
     for i in range(len(id_groups)):
-        point = {'name': cls_groups[id_groups[i]-1], 'radius': signal[i],
+        id_group = np.argmax(np.unique(id_groups) == id_groups[i])
+        point = {'id_group': int(id_group) ,'name': cls_groups[id_groups[i]-1], 'radius': signal[i],
                  'latitude': nodes.iloc[i].latitude, 'longitude': nodes.iloc[i].longitude}
         data.append(point)
-            
+    
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)   
     
