@@ -1,5 +1,7 @@
 # 50 Years of Terrorism
 
+Data Story: [https://adateamelec.github.io](https://adateamelec.github.io)
+
 # Abstract
 
 Terrorism is a subject largely covered in the media, and, unfortunately, we became accustomed to its presence worldwide, particularly over the last decade. Nevertheless, the problem we are facing today is not new. The source of certain conflicts dates from multiple decades, some of which are still lasting today. Our goal is to track and vizualize terrorism evolution through the past 50 years based on "[The Global Terrorism Database](https://www.kaggle.com/START-UMD/gtd)". There are many questions we can ask ourselves about terrorism, such as "Is EU less safe nowadays ?", "Did attack mediums & reasons change over the years ?" or "Can we discriminate current/future conflictual zones ?". It would be presumptuous from us to say that we are going to solve major issues, or even predict futur attacks. However, through the exploration of the dataset, and by trying to answer those interrogations, we aim to grasp an overview and a better understanding to the evolution of terrorism.
@@ -44,5 +46,7 @@ In our data we have 3 entries for groupe names. It is linked to the fact that so
 ## 2. Group territory evolution
 An other why of looking at terrorism it to look at how group territories are evolving over the years. Al Qaida was present in Iraq few years ago. Now it is ISIS that is ruling over the same territory. We will create a graph to represent the atual world and use graph signal processing (GSP) to look at the evolution of territories over time. More precisely we will use [heat kernels](https://en.wikipedia.org/wiki/Heat_kernel) to estimate the zones of influence of each groups. This technic allows us to give importance to attacks and create intelligent representation of territories.
 
-## 3. Reasons (if time allows)
-There is still one question in our plan that remains unanswerd: "Is the religious factor always responsible for terrorist attacks ?". It is difficult to answer to this question since we have actually have no data on attacks motives. We know who is targeted but not the reasons of the attacks. A solution will be to use online source to complete our data. For example one can imagine using wikipedia to find most frequent terms occurences. The term "Religion" is more likely to appear on ISIS wikipage than on FARC one.
+# Contributions
+- Christian Abbet: Data reading and cleaning. Computation of groups info and location and statisitcs. Plotting of results using folium and basemap. Graph signal processing technics for groups clustering (Signed Graph) and territories location (Heat Kernels and classification). Final presentation
+- Nicolas Masserey: Data cleaning and processing, map generation using folium, results analysis, writting data story. Final presentation 
+- Alexandre Poussard: Problem formulation, data processing, analysis/graph plots, story telling developpement using d3.js. Final presentation
